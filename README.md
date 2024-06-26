@@ -15,3 +15,11 @@ Ensure the following ports are open in your firewall:
 - 443/tcp (0.0.0.0) - HTTPS IPv4
 - 30303/tcp (0.0.0.0) - Ethereum network
 - 30303/udp (0.0.0.0) - Ethereum network
+
+
+### Troubleshooting
+
+- Clear out cloned repo: `rm -rf /tmp/strato-baremetal`
+- Clear out docker images: `docker system prune --volumes --force`
+- Clear out docker volumes: `docker volume rm $(docker volume ls -q)`
+- Clear out docker networks: `docker network rm $(docker network ls -q)`

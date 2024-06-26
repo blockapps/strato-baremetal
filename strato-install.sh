@@ -76,8 +76,9 @@ BASE_CODE_COLLECTION=d979d67877db869f18283e93ea4bf2d256df92d2 \\
 ./strato
 EOF
 
-# Make the script executable
+# Make follow on scripts executable
 sudo chmod +x /datadrive/strato-getting-started/strato-run.sh
+sudo chmod +x /tmp/strato-baremetal/ssl-setup.py
 
 # Create a symbolic link in /usr/local/bin
 sudo ln -s /datadrive/strato-getting-started/strato-run.sh /usr/local/bin/strato-run

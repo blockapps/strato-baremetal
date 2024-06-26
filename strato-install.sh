@@ -64,6 +64,7 @@ sudo ./strato --pull
 # Create the run script
 cat <<EOF >strato-run.sh
 #!/bin/bash
+cd /datadrive/strato-getting-started || exit 1
 NODE_HOST="$DOMAIN_NAME" \\
 BOOT_NODE_IP='["44.209.149.47","54.84.33.40","52.1.78.10","44.198.14.117"]' \\
 networkID="6909499098523985262" \\

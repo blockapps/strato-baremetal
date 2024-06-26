@@ -1,10 +1,17 @@
 # 🏴‍☠️ Node Provisioning
 
 ### So you want to mine silva, Marooch?
-1. `git clone https://github.com/andyakovlev/strato-baremetal /tmp/strato-baremetal` 
-2. `sudo bash /tmp/strato-baremetal/strato-install.sh` enter your node’s `*domain name*`, as well as `*CLIENT_ID*` and `*CLIENT_SECRET*` you got from us
-3. `sudo python3 /tmp/strato-baremetal/ssl-setup.py` and enter your `*email*` and node’s `*domain name*`
-4. `sudo ./datadrive/strato-getting-started/strato-run.sh`
+
+Prerequisites:
+- A server with 4 CPU cores and 8GB RAM and 80GB SSD
+- A domain name pointing to your server's IP
+- CLIENT_ID and CLIENT_SECRET provided by the BlockApps team
+
+Steps:
+1. Clone the repository: `git clone https://github.com/andyakovlev/strato-baremetal /tmp/strato-baremetal` 
+2. Review the installation script for security, then run: `sudo bash /tmp/strato-baremetal/strato-install.sh` you will be prompted to enter your node's `*domain name*`, `*CLIENT_ID*` and `*CLIENT_SECRET*`
+3. Set up SSL: `ssl-setup` and enter your `*email*` and node’s `*domain name*`
+4. Launch your node: `strato-run` 
 
 ### Firewall Recommendations 
 

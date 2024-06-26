@@ -76,5 +76,11 @@ BASE_CODE_COLLECTION=d979d67877db869f18283e93ea4bf2d256df92d2 \\
 ./strato
 EOF
 
-sudo chmod +x strato-run.sh
-echo "Installation complete. You can now run ./strato-run.sh to start STRATO."
+# Make the script executable
+sudo chmod +x /datadrive/strato-getting-started/strato-run.sh
+
+# Create a symbolic link in /usr/local/bin
+sudo ln -s /datadrive/strato-getting-started/strato-run.sh /usr/local/bin/strato-run
+sudo ln -s /tmp/strato-baremetal/ssl-setup.py /usr/local/bin/ssl-setup
+
+echo "Installation complete. Set up SSL certificates using 'ssl-setup' and run 'strato-run' from anywhere to start STRATO."

@@ -6,10 +6,11 @@ read -p "Enter domain name: " DOMAIN_NAME
 read -p "Enter client ID: " CLIENT_ID
 read -p "Enter client secret: " CLIENT_SECRET
 
-# Update and install packages
-apt update && apt upgrade -y
-sudo apt install -y certbot
-apt install -y docker.io git htop jq
+# Update package lists
+sudo apt update
+
+# Install required packages
+sudo apt install -y certbot docker.io git htop jq
 
 # Enable and start Docker
 systemctl enable docker

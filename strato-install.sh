@@ -8,7 +8,8 @@ read -p "Enter client secret: " CLIENT_SECRET
 
 # Update and install packages
 apt update && apt upgrade -y
-sudo apt install -y certbot docker.io git htop jq
+sudo apt install -y certbot
+apt install -y docker.io git htop jq
 
 # Enable and start Docker
 systemctl enable docker

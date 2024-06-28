@@ -9,7 +9,7 @@ Prerequisites:
 - CLIENT_ID and CLIENT_SECRET provided by the BlockApps team
 
 Steps:
-1. Review the installation script in this git repo for security, then ssh into server and run `curl https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/install.sh | bash` - you will be prompted to enter your node's `*domain name*`, `*CLIENT_ID*` and `*CLIENT_SECRET*`
+1. Review the installation script in this git repo for security, then ssh into server and run `bash <(curl -sSL https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/install.sh)` - you will be prompted to enter your node's `*domain name*`, `*CLIENT_ID*` and `*CLIENT_SECRET*`
 2. Set up SSL: `ssl-setup` and enter your `*email*` and node’s `*domain name*`
 3. Launch your node: `strato-run` 
 

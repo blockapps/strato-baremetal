@@ -77,6 +77,9 @@ BASE_CODE_COLLECTION=d979d67877db869f18283e93ea4bf2d256df92d2 \\
 ./strato
 EOF
 
+# Clone the strato-baremetal repository to get ssl-setup.py
+git clone https://github.com/andyakovlev/strato-baremetal /tmp/strato-baremetal
+
 # Make follow on scripts executable
 sudo chmod +x /datadrive/strato-getting-started/strato-run.sh
 sudo chmod +x /tmp/strato-baremetal/ssl-setup.py

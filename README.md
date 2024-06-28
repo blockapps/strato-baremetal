@@ -26,7 +26,8 @@ Ensure the following ports are open in your firewall:
 
 ### Troubleshooting
 
-- Clear out cloned repo: `rm -rf /tmp/strato-baremetal`
+- Clear out cloned install repo: `rm -rf /tmp/strato-baremetal`
+- Clear out datadrive: `rm -rf /datadrive`
 - Clear out docker images: `docker system prune --volumes --force`
 - Clear out docker volumes: `docker volume rm $(docker volume ls -q)`
 - Clear out docker networks: `docker network rm $(docker network ls -q)`

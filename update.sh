@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd /datadrive/strato-getting-started
 
 # remove extra flags

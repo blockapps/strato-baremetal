@@ -23,6 +23,9 @@ Ensure the following ports are open in your firewall:
 - 30303/tcp (0.0.0.0) - Ethereum network
 - 30303/udp (0.0.0.0) - Ethereum network
 
+### Updates
+
+To update your node, run `curl https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/update.sh | bash`
 
 ### Troubleshooting
 

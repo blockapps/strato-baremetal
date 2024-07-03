@@ -13,12 +13,12 @@ sudo apt update
 sudo apt install -y certbot docker.io git htop jq
 
 # Enable and start Docker
-systemctl enable docker
-systemctl start docker
+sudo systemctl enable docker
+sudo systemctl start docker
 
 # Install docker-compose
-mkdir -p /usr/local/lib/docker/cli-plugins/
-apt install -y docker-compose
+sudo mkdir -p /usr/local/lib/docker/cli-plugins/
+sudoapt install -y docker-compose
 
 # Create the data directory
 sudo mkdir -p /datadrive
@@ -66,14 +66,9 @@ cat <<EOF >strato-run.sh
 #!/bin/bash
 cd /datadrive/strato-getting-started || exit 1
 NODE_HOST="$DOMAIN_NAME" \\
-BOOT_NODE_IP='["44.209.149.47","54.84.33.40","52.1.78.10","44.198.14.117"]' \\
-networkID="6909499098523985262" \\
 OAUTH_CLIENT_ID="$CLIENT_ID" \\
 OAUTH_CLIENT_SECRET="$CLIENT_SECRET" \\
 ssl=true \\
-accountNonceLimit=2000 \\
-creatorForkBlockNumber=6200 \\
-BASE_CODE_COLLECTION=d979d67877db869f18283e93ea4bf2d256df92d2 \\
 ./strato
 EOF
 

@@ -25,7 +25,7 @@ Ensure the following ports are open in your firewall:
 
 ### Updates
 
-To update your node, run `curl https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/update.sh | bash`
+To update your node, run `bash <(curl -sSL https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/update.sh)`
 
 ### Troubleshooting
 

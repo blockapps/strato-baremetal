@@ -18,7 +18,7 @@ sudo systemctl start docker
 
 # Install docker-compose
 sudo mkdir -p /usr/local/lib/docker/cli-plugins/
-sudoapt install -y docker-compose
+sudo apt install -y docker-compose
 
 # Create the data directory
 sudo mkdir -p /datadrive

@@ -1,6 +1,6 @@
 # 🏴‍☠️ Node Provisioning
 
-### So you want to mine silva, Marooch?
+### So you want to run a STRATO Mercata Validator Node, Marooch?
 
 Prerequisites:
 - A server with 4 CPU cores and 8GB RAM and 80GB SSD
@@ -9,7 +9,7 @@ Prerequisites:
 - CLIENT_ID and CLIENT_SECRET provided by the BlockApps team
 
 Steps:
-1. Review the installation script in this git repo for security, then ssh into server and run `bash <(curl -sSL https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/install.sh)` - you will be prompted to enter your node's `*domain name*`, `*CLIENT_ID*` and `*CLIENT_SECRET*`
+1. Review the installation script in this git repo for security, then ssh into server and run `bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/install.sh)` - you will be prompted to enter your node's `*domain name*`, `*CLIENT_ID*` and `*CLIENT_SECRET*`
 2. Set up SSL: `ssl-setup` and enter your `*email*` and node’s `*domain name*`
 3. Launch your node: `strato-run` 
 
@@ -25,7 +25,7 @@ Ensure the following ports are open in your firewall:
 
 ### Updates
 
-To update your node, run `bash <(curl -sSL https://raw.githubusercontent.com/andyakovlev/strato-baremetal/main/update.sh)`
+To update your node, run `bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/update.sh)`
 
 ### Troubleshooting
 

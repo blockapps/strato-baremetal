@@ -27,6 +27,8 @@ Ensure the following ports are open in your firewall:
 
 To update your node, run `bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/update.sh)`
 
+To update your node's SSL certificate, run `bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/ssl-update.sh)`
+
 ### Troubleshooting
 
 - Clear out cloned install repo: `rm -rf /tmp/strato-baremetal`

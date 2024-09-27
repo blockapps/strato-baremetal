@@ -13,5 +13,3 @@ sudo chmod +x /tmp/strato-baremetal/ssl-setup.py
 sudo rm -rf /etc/letsencrypt/
 
 ssl-setup
-
-sudo ./strato-run.sh

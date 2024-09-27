@@ -2,7 +2,9 @@
 
 cd /datadrive/strato-getting-started
 
-sudo ./strato --stop
+sudo ./strato --wipe
+
+sudo rm -rf /tmp/mercata-aws-node
 
 git clone https://github.com/andyakovlev/strato-baremetal /tmp/strato-baremetal
 

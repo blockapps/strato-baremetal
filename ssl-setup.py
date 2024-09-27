@@ -35,6 +35,14 @@ def provision_certificate(domain, email):
         target_cert_path = '/datadrive/strato-getting-started/ssl/certs/server.pem'
         target_key_path = '/datadrive/strato-getting-started/ssl/private/server.key'
 
+        # Remove existing certificate and key files if they exist
+        if os.path.exists(target_cert_path):
+            os.remove(target_cert_path)
+            print(f"Existing certificate at {target_cert_path} removed.")
+        if os.path.exists(target_key_path):
+            os.remove(target_key_path)
+            print(f"Existing key at {target_key_path} removed.")
+
         # Copy the certificate and key to the specified paths
         copy_cert_command = ['sudo', 'cp', cert_path, target_cert_path]
         copy_key_command = ['sudo', 'cp', key_path, target_key_path]

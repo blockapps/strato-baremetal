@@ -1,4 +1,6 @@
-# 🏴‍☠️ Node Provisioning
+[<img src="https://blockapps.net/wp-content/uploads/2024/06/BlockAppsLogos_Color-Horizontal-1.png">](https://blockapps.net/)
+
+# STRATO Mercata Node Provisioning
 
 ### So you want to run a STRATO Mercata Validator Node, Marooch?
 

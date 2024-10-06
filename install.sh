@@ -73,7 +73,7 @@ ssl=true \\
 EOF
 
 # Clone the strato-baremetal repository to get ssl-setup.py
-git clone https://github.com/andyakovlev/strato-baremetal /tmp/strato-baremetal
+git clone https://github.com/blockapps/strato-baremetal /tmp/strato-baremetal
 
 # Make follow on scripts executable
 sudo chmod +x /datadrive/strato-getting-started/strato-run.sh

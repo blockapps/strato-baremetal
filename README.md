@@ -4,7 +4,7 @@
 
 Prerequisites:
 - A server with 4 CPU cores and 8GB RAM and 80GB SSD
-- Unbuntu 22.04 LTS
+- Ubuntu 22.04 LTS
 - A domain name pointing to your server's IP
 - CLIENT_ID and CLIENT_SECRET provided by the BlockApps team
 

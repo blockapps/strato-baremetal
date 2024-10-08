@@ -108,6 +108,7 @@ fi
 ssl-get-cert "$DOMAIN_NAME" "$ADMIN_EMAIL"
 
 # Add a cron job to renew the SSL certificate every two months automatically
+echo "Adding the crontab job to renew the SSL certificate every two months..."
 (crontab -l 2>/dev/null; echo "0 3 2 */2 * ssl-get-cert \"${DOMAIN_NAME}\" \"${ADMIN_EMAIL}\" | tee -a /datadrive/letsencrypt-renew.log") | crontab -
 
 echo "Installation complete. Run 'strato-run' from anywhere to start STRATO."

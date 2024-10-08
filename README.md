@@ -13,10 +13,13 @@ Prerequisites:
 Steps:
 1. Review the installation script `install.sh` in this git repo for security, then ssh into server and run:
     ```shell
-    bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/install.sh)`
+    bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/install.sh)
     ```
     You will be prompted to enter your node's `*domain name*`, `*admin email address*`, `*CLIENT_ID*` and `*CLIENT_SECRET*`
-2. Launch your node: `strato-run` 
+2. Launch your node: 
+   ```shell
+   strato-run
+   ``` 
 
 ### Firewall Recommendations 
 
@@ -31,13 +34,24 @@ Ensure the following ports are open in your firewall:
 
 ### STRATO Update
 
-To update your node, run `bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/update.sh)`
+To update your node, run:
+```shell
+bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/update.sh)
+```
+or simply:
+```shell
+strato-update
+```
 
 ### SSL Certificate Update
 
 The SSL certificate is updated automatically every 2 months with a crontab job. 
 
-In case if you need to initiate the certificate renewal process manually, execute:
+In case you need to initiate the certificate renewal process manually, execute:
 ```shell
 bash <(curl -sSL https://raw.githubusercontent.com/blockapps/strato-baremetal/main/ssl-get-cert.sh)
+```
+or simply:
+```shell
+ssl-get-cert
 ```

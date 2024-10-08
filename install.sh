@@ -3,9 +3,9 @@ set -e  # Exit immediately if a command exits with a non-zero status
 
 # Ask user for mandatory variables
 read -p "Enter domain name: " DOMAIN_NAME
+read -p "Enter admin email address (for Certbot notifications about SSL cert renewal): " ADMIN_EMAIL
 read -p "Enter client ID: " CLIENT_ID
 read -p "Enter client secret: " CLIENT_SECRET
-read -p "Enter admin email address (for Certbot notifications about SSL cert renewal): " ADMIN_EMAIL
 
 
 # Add Docker's official GPG key:
@@ -85,6 +85,7 @@ git clone https://github.com/blockapps/strato-baremetal /datadrive/strato-bareme
 
 # Create a symbolic link in /usr/local/bin
 sudo ln -s /datadrive/strato-getting-started/strato-run.sh /usr/local/bin/strato-run
+sudo ln -s /datadrive/strato-baremetal/update.sh /usr/local/bin/strato-update
 sudo ln -s /datadrive/strato-baremetal/ssl-get-cert.sh /usr/local/bin/ssl-get-cert
 
 # Check if ufw is used on the host

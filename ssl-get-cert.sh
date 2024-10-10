@@ -23,12 +23,11 @@ EMAIL=$2
 
 NGINX_CONTAINER_NAME=$(sudo docker ps --format '{{.Names}}' | grep -E 'strato-nginx-1|strato_nginx_1' || true)
 
-# Ignoring the existing certs if they exists
-rm -rf /tmp/letsencrypt && mv /etc/letsencrypt /tmp/
+# Ignoring the existing certs if they exist
+rm -rf /tmp/letsencrypt && [ -d "/etc/letsencrypt" ] && mv /etc/letsencrypt /tmp/
 
 # if nginx container is running - stop it temporarily for certbot execution
-[[ -n "$NGINX_CONTAINER_NAME" ]] && sudo docker stop $NGINX_CONTAINER_NAME
-log_message "nginx was temporarily stopped"
+[[ -n "$NGINX_CONTAINER_NAME" ]] && sudo docker stop $NGINX_CONTAINER_NAME && log_message "nginx was temporarily stopped"
 function start_nginx {
   [[ -n "$NGINX_CONTAINER_NAME" ]] && sudo docker start $NGINX_CONTAINER_NAME && log_message "nginx was started back"
 }

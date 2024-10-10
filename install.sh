@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
-LOGFILE="~/strato-setup.log"
+LOGFILE="$HOME/strato-setup.log"
+touch $LOGFILE
 log_message() {
     local MESSAGE=$1
     echo "$(date +'%Y-%m-%d %H:%M:%S') INSTALL : $MESSAGE" | tee -a "$LOGFILE"

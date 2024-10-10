@@ -6,7 +6,8 @@ if [ "$#" -ne 2 ]; then
     exit 101
 fi
 
-LOGFILE="~/strato-setup.log"
+LOGFILE="$HOME/strato-setup.log"
+touch $LOGFILE
 log_message() {
     local MESSAGE=$1
     echo "$(date +'%Y-%m-%d %H:%M:%S') SSL-GET-CERT : $MESSAGE" | tee -a "$LOGFILE"

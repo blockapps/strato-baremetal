@@ -133,4 +133,6 @@ log_message "Adding the crontab job to renew the SSL certificate every two month
 log_message "Your crontab now:"
 sudo crontab -l
 
-log_message "Installation complete. Run 'strato-run' from anywhere to start STRATO."
+FINAL_MESSAGE="Installation complete. Run 'strato-run' from anywhere to start STRATO."
+log_message "$FINAL_MESSAGE"
+echo -e "\n\033[0;32m$FINAL_MESSAGE\033[0m"

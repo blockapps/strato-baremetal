@@ -70,7 +70,8 @@ df -h /datadrive
 
 # Clone and set up STRATO
 cd /datadrive || exit 101
-git clone https://github.com/blockapps/strato-getting-started || true
+rm -rf strato-getting-started
+git clone https://github.com/blockapps/strato-getting-started
 cd strato-getting-started || exit 102
 
 # Download docker-compose.yml of the latest release version
@@ -97,11 +98,11 @@ rm -rf /datadrive/strato-baremetal
 git clone https://github.com/blockapps/strato-baremetal /datadrive/strato-baremetal
 
 # Create a symbolic link in /usr/local/bin
-sudo rm /usr/local/bin/strato-run
+sudo rm -f /usr/local/bin/strato-run
 sudo ln -s /datadrive/strato-getting-started/strato-run.sh /usr/local/bin/strato-run
-sudo rm /usr/local/bin/strato-update
+sudo rm -f /usr/local/bin/strato-update
 sudo ln -s /datadrive/strato-baremetal/update.sh /usr/local/bin/strato-update
-sudo rm /usr/local/bin/ssl-get-cert
+sudo rm -f /usr/local/bin/ssl-get-cert
 sudo ln -s /datadrive/strato-baremetal/ssl-get-cert.sh /usr/local/bin/ssl-get-cert
 log_message "Created symlinks for the scripts"
 

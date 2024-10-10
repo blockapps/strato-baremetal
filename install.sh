@@ -1,12 +1,18 @@
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
+LOGFILE="$HOME/strato-setup.log"
+touch $LOGFILE
+log_message() {
+    local MESSAGE=$1
+    echo "$(date +'%Y-%m-%d %H:%M:%S') INSTALL : $MESSAGE" | tee -a "$LOGFILE"
+}
+
 # Ask user for mandatory variables
 read -p "Enter domain name: " DOMAIN_NAME
 read -p "Enter admin email address (for Certbot notifications about SSL cert renewal): " ADMIN_EMAIL
 read -p "Enter client ID: " CLIENT_ID
 read -p "Enter client secret: " CLIENT_SECRET
-
 
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -26,6 +32,8 @@ sudo apt update
 
 # Install required packages
 sudo apt install -y certbot git htop jq ncdu docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+log_message "Required software has been successfully installed."
 
 # Create the data directory
 sudo mkdir -p /datadrive
@@ -51,14 +59,18 @@ fi
 if command -v docker &> /dev/null; then
     sudo docker info | grep "Docker Root Dir"
 else
-    echo "Docker is not installed. The data directory is ready for when you install Docker."
+    log_message "ERROR: Docker was not installed successfully. Exiting"
+    exit 103
 fi
+
+log_message "Successfully moved docker directory to /datadrive/docker"
 
 # Check available space
 df -h /datadrive
 
 # Clone and set up STRATO
 cd /datadrive || exit 101
+rm -rf strato-getting-started
 git clone https://github.com/blockapps/strato-getting-started
 cd strato-getting-started || exit 102
 
@@ -67,6 +79,7 @@ sudo ./strato --compose
 
 # Pull necessary Docker images
 sudo ./strato --pull
+log_message "Pulled the latest STRATO Docker images"
 
 # Create the run script
 cat <<EOF >strato-run.sh
@@ -78,15 +91,20 @@ OAUTH_CLIENT_SECRET="$CLIENT_SECRET" \\
 ssl=true \\
 ./strato
 EOF
+log_message "Created the strato-run.sh file"
 
 # Clone the strato-baremetal repository
 rm -rf /datadrive/strato-baremetal
 git clone https://github.com/blockapps/strato-baremetal /datadrive/strato-baremetal
 
 # Create a symbolic link in /usr/local/bin
+sudo rm -f /usr/local/bin/strato-run
 sudo ln -s /datadrive/strato-getting-started/strato-run.sh /usr/local/bin/strato-run
+sudo rm -f /usr/local/bin/strato-update
 sudo ln -s /datadrive/strato-baremetal/update.sh /usr/local/bin/strato-update
+sudo rm -f /usr/local/bin/ssl-get-cert
 sudo ln -s /datadrive/strato-baremetal/ssl-get-cert.sh /usr/local/bin/ssl-get-cert
+log_message "Created symlinks for the scripts"
 
 # Check if ufw is used on the host
 if command -v ufw > /dev/null; then
@@ -95,22 +113,27 @@ if command -v ufw > /dev/null; then
 
     # Check if port 80/tcp is not already allowed
     if ! echo "$UFW_STATUS" | grep -q "80/tcp"; then
-        echo "Port 80/tcp not allowed. Adding rule..."
+        log_message "Port 80/tcp not allowed. Adding rule..."
         ufw allow 80/tcp
-        echo "Port 80/tcp has been allowed."
+        log_message "Port 80/tcp has been allowed."
     else
-        echo "Port 80/tcp is already allowed. Skipping."
+        log_message "Port 80/tcp is already allowed. Skipping."
     fi
 else
-    echo "UFW is not used on the host. Skipping."
+    log_message "UFW is not used on the host machine. Skipping."
 fi
 
 ssl-get-cert "$DOMAIN_NAME" "$ADMIN_EMAIL"
 
 # Add a cron job to renew the SSL certificate every two months automatically
-echo "Adding the crontab job to renew the SSL certificate every two months..."
-(crontab -l || true 2>/dev/null && echo "0 3 2 */2 * ssl-get-cert \"${DOMAIN_NAME}\" \"${ADMIN_EMAIL}\" | tee -a /datadrive/letsencrypt-renew.log") | crontab -
-echo "Your crontab now:"
-crontab -l
 
-echo "Installation complete. Run 'strato-run' from anywhere to start STRATO."
+# Remove the crontab job if it was added previously
+(sudo crontab -l | grep "ssl-get-cert" && log_message "Crontab job to renew SSL certificate already existed. Removing it...") && sudo crontab -l | grep -v "ssl-get-cert" | sudo crontab -
+log_message "Adding the crontab job to renew the SSL certificate every two months..."
+(sudo crontab -l || true 2>/dev/null && echo "0 3 2 */2 * ssl-get-cert \"${DOMAIN_NAME}\" \"${ADMIN_EMAIL}\" | tee -a /datadrive/letsencrypt-renew.log") | sudo crontab -
+log_message "Your crontab now:"
+sudo crontab -l
+
+FINAL_MESSAGE="Installation complete. Run 'strato-run' from anywhere to start STRATO."
+log_message "$FINAL_MESSAGE"
+echo -e "\n\033[0;32m$FINAL_MESSAGE\033[0m"

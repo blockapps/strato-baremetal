@@ -37,9 +37,9 @@ sudo certbot certonly --standalone --preferred-challenges http --agree-tos --non
 log_message "Certbot executed successfully"
 start_nginx
 trap - EXIT
-
-sudo cp /etc/letsencrypt/live/${DOMAIN}/fullchain.pem /datadrive/strato-getting-started/ssl/certs/server.pem
-sudo cp /etc/letsencrypt/live/${DOMAIN}/privkey.pem /datadrive/strato-getting-started/ssl/private/server.key
+DOMAIN_LOWERCASED=$(echo $DOMAIN | tr '[:upper:]' '[:lower:]')
+sudo cp /etc/letsencrypt/live/${DOMAIN_LOWERCASED}/fullchain.pem /datadrive/strato-getting-started/ssl/certs/server.pem
+sudo cp /etc/letsencrypt/live/${DOMAIN_LOWERCASED}/privkey.pem /datadrive/strato-getting-started/ssl/private/server.key
 
 log_message "Cert and key were copied to strato-getting-started directory"
 

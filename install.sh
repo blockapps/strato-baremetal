@@ -122,10 +122,13 @@ if command -v ufw > /dev/null; then
 else
     log_message "UFW is not used on the host machine. Adding the firewall rule to allow port 80 directly in iptables..."
     sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+    log_message "Port 80/tcp has been allowed."
     if ! command -v netfilter-persistent > /dev/null; then
       sudo DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
+      log_message "Installed iptables-persistent package."
     fi
     sudo netfilter-persistent save
+    log_message "Saved iptables rules to persist after reboot."
 fi
 
 

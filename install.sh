@@ -121,7 +121,7 @@ if command -v ufw > /dev/null; then
     fi
 else
     log_message "UFW is not used on the host machine. Adding the firewall rule to allow port 80 directly in iptables..."
-    iptables -A INPUT -p tcp --dport 80 -j ACCEPT || true
+    sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT || true
     sudo netfilter-persistent save || true
 fi
 

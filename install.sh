@@ -120,8 +120,11 @@ if command -v ufw > /dev/null; then
         log_message "Port 80/tcp is already allowed. Skipping."
     fi
 else
-    log_message "UFW is not used on the host machine. Skipping."
+    log_message "UFW is not used on the host machine. Adding the firewall rule to allow port 80 directly in iptables..."
+    iptables -A INPUT -p tcp --dport 80 -j ACCEPT || true
+    sudo netfilter-persistent save || true
 fi
+
 
 ssl-get-cert "$DOMAIN_NAME" "$ADMIN_EMAIL"
 

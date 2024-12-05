@@ -16,7 +16,7 @@ read -p "Enter client secret: " CLIENT_SECRET
 
 # Add Docker's official GPG key:
 sudo apt-get update
-sudo apt-get install ca-certificates curl
+sudo apt-get install -y ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -109,20 +109,23 @@ log_message "Created symlinks for the scripts"
 # Check if ufw is used on the host
 if command -v ufw > /dev/null; then
     # Get the status of UFW
-    UFW_STATUS=$(ufw status)
+    UFW_STATUS=$(sudo ufw status)
 
     # Check if port 80/tcp is not already allowed
     if ! echo "$UFW_STATUS" | grep -q "80/tcp"; then
         log_message "Port 80/tcp not allowed. Adding rule..."
-        ufw allow 80/tcp
+        sudo ufw allow 80/tcp
         log_message "Port 80/tcp has been allowed."
     else
         log_message "Port 80/tcp is already allowed. Skipping."
     fi
 else
     log_message "UFW is not used on the host machine. Adding the firewall rule to allow port 80 directly in iptables..."
-    sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT || true
-    sudo netfilter-persistent save || true
+    sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+    if ! command -v netfilter-persistent > /dev/null; then
+      sudo DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent
+    fi
+    sudo netfilter-persistent save
 fi
 
 

@@ -1,0 +1,198 @@
+#############################
+# Variables
+#############################
+
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "vpc_name" {
+  description = "Name of the VPC"
+  type        = string
+  default     = "MyVPC"
+}
+
+#############################
+# Provider
+#############################
+
+provider "aws" {
+  region = var.aws_region
+}
+
+#############################
+# VPC and Networking Resources
+#############################
+
+# Create the VPC
+resource "aws_vpc" "this" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = var.vpc_name
+  }
+}
+
+# Create the Internet Gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.this.id
+
+  tags = {
+    Name = "${var.vpc_name}-igw"
+  }
+}
+
+# Create a Public Subnet
+resource "aws_subnet" "public" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "${var.aws_region}a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-public-subnet"
+  }
+}
+
+# Create a Route Table for the Public Subnet
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.this.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "${var.vpc_name}-public-rt"
+  }
+}
+
+# Associate the Route Table with the Public Subnet
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
+}
+
+#############################
+# Security Group
+#############################
+
+resource "aws_security_group" "instance_sg" {
+  name        = "${var.vpc_name}-instance-sg"
+  description = "Security group with SSH, HTTP, HTTPS, and custom port 30303 rules"
+  vpc_id      = aws_vpc.this.id
+
+  # Ingress Rules
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow TCP port 30303"
+    from_port   = 30303
+    to_port     = 30303
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow UDP port 30303"
+    from_port   = 30303
+    to_port     = 30303
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Egress Rule (allow all outbound traffic)
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.vpc_name}-instance-sg"
+  }
+}
+
+#############################
+# EC2 Instance
+#############################
+
+# Fetch the latest Amazon Linux 2 AMI
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+# Create the EC2 instance
+resource "aws_instance" "instance" {
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "m6a.large"
+  subnet_id              = aws_subnet.public.id
+  vpc_security_group_ids = [aws_security_group.instance_sg.id]
+
+  # Configure the root block device with an 80GB volume
+  root_block_device {
+    volume_size = 80
+    volume_type = "gp2"
+  }
+
+  # Ensure the instance gets a public IP (also set via subnet mapping)
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "${var.vpc_name}-instance"
+  }
+}
+
+#############################
+# Elastic IP
+#############################
+
+resource "aws_eip" "instance_eip" {
+  instance = aws_instance.instance.id
+  vpc      = true
+
+  depends_on = [aws_instance.instance]
+}
+
+#############################
+# Outputs
+#############################
+
+output "instance_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = aws_eip.instance_eip.public_ip
+}

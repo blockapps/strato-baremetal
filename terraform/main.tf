@@ -158,7 +158,7 @@ resource "aws_security_group" "instance_sg" {
 # Create the EC2 instance
 resource "aws_instance" "instance" {
   ami                    = module.ubuntu_24_04_latest.ami_id
-  instance_type          = "m6a.large"
+  instance_type          = "m6a.xlarge"
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
   key_name               = "strato-keys"

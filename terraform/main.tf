@@ -22,6 +22,15 @@ provider "aws" {
   region = var.aws_region
 }
 
+
+#############################
+# Third-party module for Ubuntu AMIs
+#############################
+module "ubuntu_24_04_latest" {
+  source = "github.com/andreswebs/terraform-aws-ami-ubuntu"
+}
+
+
 #############################
 # VPC and Networking Resources
 #############################
@@ -158,7 +167,7 @@ data "aws_ami" "amazon_linux" {
 
 # Create the EC2 instance
 resource "aws_instance" "instance" {
-  ami                    = data.aws_ami.amazon_linux.id
+  ami                    = module.ubuntu_24_04_latest.ami_id
   instance_type          = "m6a.large"
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
@@ -167,7 +176,7 @@ resource "aws_instance" "instance" {
   # Configure the root block device with an 80GB volume
   root_block_device {
     volume_size = 80
-    volume_type = "gp2"
+    volume_type = "gp3"
   }
 
   # Ensure the instance gets a public IP (also set via subnet mapping)

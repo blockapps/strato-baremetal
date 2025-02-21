@@ -8,11 +8,27 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "aws_instance_type" {
+  description = "AWS instance type/size to create"
+  type        = string
+  default     = "m6a.xlarge" # this is the minimum recommended size
+}
+
+# Annoyingly the key-pair has to be manually created in the
+# AWS Console ahead of running the Terraform automation steps.
+# There is no means of creating this keypair on-the-fly, it seems.
+variable "aws_key_pair_name" {
+  description = "Name of key pair used to SSH into instance"
+  type        = string
+  default     = "strato-keys"
+}
+
 variable "vpc_name" {
   description = "Name of the VPC"
   type        = string
   default     = "MyVPC"
 }
+
 
 #############################
 # Provider
@@ -158,10 +174,10 @@ resource "aws_security_group" "instance_sg" {
 # Create the EC2 instance
 resource "aws_instance" "instance" {
   ami                    = module.ubuntu_24_04_latest.ami_id
-  instance_type          = "m6a.xlarge"
+  instance_type          = var.aws_instance_type
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
-  key_name               = "strato-keys"
+  key_name               = var.aws_key_pair_name
 
   # Configure the root block device with an 80GB volume
   root_block_device {

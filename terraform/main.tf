@@ -199,7 +199,7 @@ resource "aws_instance" "instance" {
 
 resource "aws_eip" "instance_eip" {
   instance = aws_instance.instance.id
-  vpc      = true
+  domain   = "vpc"
 
   depends_on = [aws_instance.instance]
 }

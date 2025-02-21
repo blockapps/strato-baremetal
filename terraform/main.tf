@@ -110,7 +110,6 @@ resource "aws_security_group" "instance_sg" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 
   ingress {
@@ -163,6 +162,7 @@ resource "aws_instance" "instance" {
   instance_type          = "m6a.large"
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
+  key_name               = "strato-keys"
 
   # Configure the root block device with an 80GB volume
   root_block_device {

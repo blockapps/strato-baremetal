@@ -242,18 +242,18 @@ EOF
 # Outputs
 #############################
 
-output "01_instance_public_ip" {
+output "instance_public_ip" {
   description = "Public IP address of the OCI instance"
   value       = oci_core_instance.instance.public_ip
 }
 
-output "02_ubuntu_user_password" {
+output "instance_ubuntu_user_password" {
   description = "Generated password for Ubuntu user"
   value       = random_string.ubuntu_password.result
   sensitive   = false
 }
 
-output "03_next_steps" {
+output "next_steps" {
   description = "Next steps"
   value       = <<EOT
 
